@@ -1,57 +1,20 @@
-# cli 制作流程
+# 自定义的vue脚手架
 
-## 1. commander插件来处理命令行  
+## 运行方式 
+
+### 安装
 ``` js
-const program = require('commander');
 
-program
-    .version(require('../package').version)
-    .option('-t, --test', 'Add unit test for components')
-    .usage('<command> [options]')
-    .command('-init', 'Generate a new project')
-    .parse(process.argv);
+# npm install -g @ddjf/dd-vue-cli
 ```
-## 2. download-git-repo插件来下载模板并引入
+
+### 运行
 ``` js
-download(template, name, {clone: false}, err => {
-    if (err) {
-        logger.fatal("download template [" + template + "] error ");
-    }
-    generate(name, template, to, err => {
-        if (err) {
-            logger.fatal(err);
-        } else {
-            console.log()
-            logger.success('Generated "%s".', name)
-        }
-    })
-})
+
+# ddjf init my-project -options
 ```
 
-### 问题汇总
-#### 1. 获取当前目录文件名的方法：  
-    需要使用node的path对象，path对象中有一个relation的方法
-``` js
-    path.relation('../', process.pwd());
+### 工作模式
 ```
-#### 2. 获取当前Git用户：
-    需要使用git命令，要用到node的child_process提供衍生子进程的功能
-``` nodejs
-const exec = require('child_process').execSync
-
-module.exports = () => {
-  let name
-  let email
-
-  try {
-    name = exec('git config --get user.name')
-    email = exec('git config --get user.email')
-  } catch (e) {}
-
-  name = name && JSON.stringify(name.toString().trim()).slice(1, -1)
-  email = email && (' <' + email.toString().trim() + '>')
-  return (name || '') + (email || '')
-}
+运行的时候，首先将模板下载都我们root目录的.vue-template下面,然后通过meda.js 生成对应的模板
 ```
-#### 3. 使用metadata读取meta文件的时候需要将template模板先读取到本地，然后再在本地读取文件：
-

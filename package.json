@@ -1,6 +1,6 @@
 {
-    "name": "@ddjf/wvue-cli",
-    "version": "1.0.0",
+    "name": "@ddjf/dd-vue-cli",
+    "version": "1.0.2",
     "description": "cli for install publish; this.is only apply in a template of create vue",
     "author": {
         "email": "wangqiang@ddjf.com.cn",
@@ -28,6 +28,6 @@
         "user-home": "^2.0.0"
     },
     "bin": {
-        "vu": "bin/scion"
+        "ddjf": "bin/scion"
     }
 }
