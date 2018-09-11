@@ -1,0 +1,41 @@
+#!/usr/bin/env node --harmony
+
+'use strict'
+
+process.env.NODE_PATH = __dirname + '/../node_modules/';
+
+const program = require('commander');
+program
+  .command('init <app-name>')
+  .description('创建一个vue项目，如果不指定项目名，则以当前目录为项目名')
+  .option('-r, --router', '添加路由')
+  .option('-x, --vuex', '添加vuex')
+  .option('-c, --scss', '添加scss')
+  .option('-a, --sass', '添加sass')
+  .option('-s, --stylus', '添加stylus')
+  .option('-t, --test', '添加单元测试')
+  .option('-m, --mock', '添加添加mock数据')
+  .option('-v, --mpvue', '添加mpvue支持')
+  .option('-f, --force', '项目名重复则进行替换')
+  .option('-i, --fetch', '项目是否兼容低版本，低版本fetch协议要引用fetch-ie8')
+  .option('-t, --template [file]', '项目采用的模板', 'wangqiang66/ddjf-vue-template')
+  .action((name, cmd) => {
+    const options = cleanArgs(cmd)
+    require('../lib/create')(name, options)
+  })
+  program.parse(process.argv);
+
+function cleanArgs(cmd) {
+  const args = {}
+  cmd.options.forEach(o => {
+    const key = o.long.replace(/^--/, '')
+    // if an option is not present and Command has a method with the same name
+    // it should not be copied
+    if (typeof cmd[key] !== 'function' && typeof cmd[key] !== 'undefined') {
+      args[key] = cmd[key]
+    } else {
+      args[key] = false
+    }
+  })
+  return args
+}
